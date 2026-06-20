@@ -47,10 +47,9 @@ The system will create the `attendance` table automatically on first run.
 
 Default connection settings (edit `database.py` if yours differ):
 
-```python
-DB_USER     = "system"
-DB_PASSWORD = "admin123"
-DB_DSN      = "localhost/ORCL"   # or "localhost/XEPDB1" for Oracle XE 21c+
+```DB_USER     = "your_username"
+DB_PASSWORD = "your_password"
+DB_DSN      = "localhost/ORCL"
 ```
 
 You can also change these settings from the **Settings** page in the GUI without editing files.
