@@ -1,0 +1,8 @@
+opencv-python
+face_recognition
+numpy
+oracledb
+streamlit
+pandas
+Pillow
+python-dotenv
