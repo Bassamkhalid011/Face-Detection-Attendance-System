@@ -56,7 +56,7 @@ DB_PASSWORD=your_password
 DB_DSN=localhost/ORCL
 ```
 
-> **Note:** Never share your `.env` file. It is already listed in `.gitignore` so it will not be pushed to GitHub.
+
 
 ---
 
@@ -130,21 +130,7 @@ python main.py
 
 ---
 
-## Database table
 
-The system creates this table automatically:
-
-```sql
-CREATE TABLE attendance (
-    id           NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    student_name VARCHAR2(100),
-    att_date     DATE,
-    att_time     VARCHAR2(20),
-    status       VARCHAR2(20) DEFAULT 'Present'
-)
-```
-
----
 
 ## File Structure
 
