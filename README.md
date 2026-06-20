@@ -40,23 +40,34 @@ pip install -r requirements.txt
 
 ---
 
-### 2. Set up Oracle Database
+### 2. Set up Database Credentials
+
+Copy `.env.example` to `.env`:
+
+```cmd
+copy .env.example .env
+```
+
+Then open `.env` and fill in your Oracle DB details:
+
+```
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_DSN=localhost/ORCL
+```
+
+> **Note:** Never share your `.env` file. It is already listed in `.gitignore` so it will not be pushed to GitHub.
+
+---
+
+### 3. Set up Oracle Database
 
 Make sure Oracle Database (XE or Standard) is running on your machine.
 The system will create the `attendance` table automatically on first run.
 
-Default connection settings (edit `database.py` if yours differ):
-
-```DB_USER     = "your_username"
-DB_PASSWORD = "your_password"
-DB_DSN      = "localhost/ORCL"
-```
-
-You can also change these settings from the **Settings** page in the GUI without editing files.
-
 ---
 
-### 3. Add student photos
+### 4. Add student photos
 
 Create a folder for each student inside `known_faces/`:
 
@@ -73,11 +84,9 @@ known_faces/
 - Use **3–5 clear, well-lit photos** per student for best accuracy
 - Supported formats: `.jpg`, `.jpeg`, `.png`
 
-You can also upload photos directly through the **Manage Students** page in the GUI.
-
 ---
 
-### 4. Encode faces
+### 5. Encode faces
 
 Run this once (and again whenever you add or remove students):
 
@@ -86,11 +95,10 @@ python encode_faces.py
 ```
 
 This generates `encodings.pkl` which the recognition system uses.
-You can also trigger this from the **Manage Students** page in the GUI.
 
 ---
 
-### 5. Run the GUI (recommended)
+### 6. Run the app
 
 ```cmd
 streamlit run app.py
@@ -98,19 +106,9 @@ streamlit run app.py
 
 Open your browser at **http://localhost:8501**
 
-The GUI includes:
-
-| Page | What it does |
-|------|-------------|
-| 🏠 Dashboard | Today's attendance summary with metrics |
-| 📸 Live Recognition | Webcam feed with real-time face detection and logging |
-| 👥 Manage Students | Add/remove students and trigger re-encoding |
-| 📋 Attendance Records | View, filter, and export attendance by date |
-| ⚙️ Settings | Configure Oracle DB connection and recognition parameters |
-
 ---
 
-### 5b. Run without GUI (command-line)
+### 6b. Run without GUI (command-line)
 
 ```cmd
 python main.py
@@ -148,27 +146,24 @@ CREATE TABLE attendance (
 
 ---
 
-## File structure
+## File Structure
 
-| File / Folder | Purpose |
-|---------------|---------|
-| `app.py` | Streamlit GUI (main entry point) |
-| `main.py` | Command-line camera + recognition loop |
-| `encode_faces.py` | Reads `known_faces/`, generates `encodings.pkl` |
-| `database.py` | Oracle DB connection and all queries |
-| `requirements.txt` | Python dependencies |
-| `encodings.pkl` | Auto-generated — stores face encoding vectors |
-| `known_faces/` | Put student photo folders here |
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---------|-----|
-| `oracledb` connection error | Check Oracle service is running: `lsnrctl status` (Windows: check Services) |
-| `encodings.pkl not found` | Run `python encode_faces.py` or use Manage Students → Re-encode |
-| Camera not opening | Check another app isn't using the webcam; try changing device index to `1` in `main.py` |
-| Face not recognized | Add more photos (3–5), ensure good lighting, try lowering tolerance to `0.45` |
-| `dlib` install fails | Install CMake and Visual Studio C++ Build Tools, then retry `pip install dlib` |
-| DSN format for Oracle 21c XE | Use `localhost/XEPDB1` instead of `localhost/ORCL` |
+```
+Face-Detection-Attendance-System-/
+│
+├── app.py                  → Streamlit GUI (main entry point)
+├── main.py                 → Command-line camera + recognition loop
+├── encode_faces.py         → Reads known_faces/, generates encodings.pkl
+├── database.py             → Oracle DB connection and all queries
+├── requirements.txt        → Python dependencies
+├── .env                    → Your DB credentials (never share this)
+├── .env.example            → Template for DB credentials
+├── .gitignore              → Ensures .env is not pushed to GitHub
+├── encodings.pkl           → Auto-generated — stores face encoding vectors
+│
+└── known_faces/            → Put student photo folders here
+    ├── Ali/
+    │   └── photo1.jpg
+    └── Sara/
+        └── photo1.jpg
+```
